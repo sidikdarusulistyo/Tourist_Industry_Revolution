@@ -61,6 +61,7 @@ classification_threshold = 0.45
 # Predict button
 if st.button("Predict"):
     prob = model.predict_proba(input_data)[:, 1]
-    pred = int(prob >= classification_threshold)
+    # Access the scalar probability from the array before comparison
+    pred = int(prob[0] >= classification_threshold)
     result = "will purchase the travel package" if pred == 1 else "is unlikely to purchase"
     st.write(f"Prediction: Customer {result}")
