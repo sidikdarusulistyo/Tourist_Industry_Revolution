@@ -19,7 +19,7 @@ DurationOfPitch = st.slider("Duration of Pitch (mins)", 0, 100, 15)
 Occupation = st.selectbox("Occupation", ["Salaried", "Small Business", "Large Business", "Free Lancer"])
 Gender = st.selectbox("Gender", ["Male", "Female", "Others"])
 NumberOfPersonVisiting = st.slider("Number of Persons Visiting", 1, 5, 2)
-NumberOfFollowups = st.slider("Number of Follow-ups", 1, 10, 3)
+NumberOfFollowups = st.slider("NumberOf Follow-ups", 1, 10, 3)
 ProductPitched = st.selectbox("Product Pitched", ["Basic", "Standard", "Deluxe", "Super Deluxe", "King"])
 PreferredPropertyStar = st.selectbox("Preferred Property Star", [1, 2, 3, 4, 5])
 MaritalStatus = st.selectbox("Marital Status", ["Married", "Single", "Divorced", "Unmarried"])
@@ -34,7 +34,7 @@ MonthlyIncome = st.number_input("Monthly Income", min_value=1000.0, value=30000.
 # ----------------------------
 # Prepare input data
 # ----------------------------
-input_data = pd.DataFrame({
+input_data = pd.DataFrame([{ # Wrapped the dictionary in a list to create a single-row DataFrame
     'Age': Age,
     'TypeofContact': TypeofContact,
     'CityTier': CityTier,
@@ -53,14 +53,14 @@ input_data = pd.DataFrame({
     'NumberOfChildrenVisiting': NumberOfChildrenVisiting,
     'Designation': Designation,
     'MonthlyIncome': MonthlyIncome
-})
+}])
 
 # Set the classification threshold
 classification_threshold = 0.45
 
 # Predict button
 if st.button("Predict"):
-    prob = model.predict_proba(input_data)[0,1]
+    prob = model.predict_proba(input_data)[:, 1]
     pred = int(prob >= classification_threshold)
     result = "will purchase the travel package" if pred == 1 else "is unlikely to purchase"
     st.write(f"Prediction: Customer {result}")
